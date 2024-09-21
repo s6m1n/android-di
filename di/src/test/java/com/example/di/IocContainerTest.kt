@@ -104,4 +104,19 @@ class IocContainerTest {
         container.addModule(TestModule5)
         assertThat(container.components.values).hasSize(3)
     }
+
+    @Test(expected = NoSuchElementException::class)
+    fun test6() {
+        val container = IocContainer()
+        container.addModule(TestModuleA)
+        container.addModule(TestModuleB)
+    }
+
+    @Test
+    fun test7() {
+        val container = IocContainer()
+        container.addModule(TestModuleB)
+        container.addModule(TestModuleA)
+        assertThat(container.components.values).hasSize(2)
+    }
 }

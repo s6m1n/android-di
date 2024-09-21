@@ -39,9 +39,11 @@ class IocContainer {
 
     private fun List<KFunction<*>>.allComponents(): Boolean = notYetComponent().isEmpty()
 
-    private fun List<KFunction<*>>.notYetComponent(): List<KFunction<*>> = filterNot { it.name in components }
+    private fun List<KFunction<*>>.notYetComponent(): List<KFunction<*>> =
+        filterNot { it.name in components }
 
-    private fun List<KFunction<*>>.firstTargetFunction(): KFunction<*> = sortedBy { it.parameters.size }.first { it.canComponent() }
+    private fun List<KFunction<*>>.firstTargetFunction(): KFunction<*> =
+        sortedBy { it.parameters.size }.first { it.canComponent() }
 
     private fun KFunction<*>.canComponent(): Boolean {
         return parameters
@@ -49,7 +51,8 @@ class IocContainer {
             .all { it in components }
     }
 
-    private fun KFunction<*>.findSourceComponents(): List<Any> = parameters.drop(1).mapNotNull { components[it.name] }
+    private fun KFunction<*>.findSourceComponents(): List<Any> =
+        parameters.drop(1).mapNotNull { components[it.name] }
 
     private fun createInstance(
         targetFunction: KFunction<*>,
