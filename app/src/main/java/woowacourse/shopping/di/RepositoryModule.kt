@@ -1,21 +1,21 @@
 package woowacourse.shopping.di
 
-import com.example.di.DiContainer
-import com.example.di.Module
+import com.example.di.DependencyMappingModule
+import com.example.di.Mapping
 import woowacourse.shopping.data.DefaultProductRepository
 import woowacourse.shopping.data.InMemoryCartRepository
+import woowacourse.shopping.data.local.LocalCartRepository
 import woowacourse.shopping.model.CartRepository
 import woowacourse.shopping.model.ProductRepository
 
-class RepositoryModule : Module {
-    override fun provideInstance(registry: DiContainer) {
-        registry.addInstance(
-            ProductRepository::class,
-            DefaultProductRepository(),
-        )
-        registry.addInstance(
-            CartRepository::class,
-            InMemoryCartRepository(),
-        )
-    }
+@DependencyMappingModule
+abstract class RepositoryModule {
+    @Mapping
+    abstract fun provideDefaultProductRepository(productRepositoryImpl: DefaultProductRepository): ProductRepository
+
+    @Mapping
+    abstract fun provideInMemoryCartRepository(cartRepositoryImpl: InMemoryCartRepository): CartRepository
+
+    @Mapping
+    abstract fun provideLocalCartRepository(cartRepositoryImpl: LocalCartRepository): CartRepository
 }
