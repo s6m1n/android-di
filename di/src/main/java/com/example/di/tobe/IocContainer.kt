@@ -1,13 +1,14 @@
-package com.example.di
+package com.example.di.tobe
 
+import com.example.di.Provides
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.functions
 import kotlin.reflect.full.hasAnnotation
 
-class IocContainer {
+class IocContainer : Container {
     val components: MutableMap<String, Any> = mutableMapOf()
 
-    fun addModule(module: Any) {
+    override fun addModule(module: Any) {
         val candidateFunctions = candidateComponents(module)
         addNoParametersInstances(candidateFunctions, module)
         addInstances(candidateFunctions.notYetComponent(), module)
@@ -39,11 +40,9 @@ class IocContainer {
 
     private fun List<KFunction<*>>.allComponents(): Boolean = notYetComponent().isEmpty()
 
-    private fun List<KFunction<*>>.notYetComponent(): List<KFunction<*>> =
-        filterNot { it.name in components }
+    private fun List<KFunction<*>>.notYetComponent(): List<KFunction<*>> = filterNot { it.name in components }
 
-    private fun List<KFunction<*>>.firstTargetFunction(): KFunction<*> =
-        sortedBy { it.parameters.size }.first { it.canComponent() }
+    private fun List<KFunction<*>>.firstTargetFunction(): KFunction<*> = sortedBy { it.parameters.size }.first { it.canComponent() }
 
     private fun KFunction<*>.canComponent(): Boolean {
         return parameters
@@ -51,8 +50,7 @@ class IocContainer {
             .all { it in components }
     }
 
-    private fun KFunction<*>.findSourceComponents(): List<Any> =
-        parameters.drop(1).mapNotNull { components[it.name] }
+    private fun KFunction<*>.findSourceComponents(): List<Any> = parameters.drop(1).mapNotNull { components[it.name] }
 
     private fun createInstance(
         targetFunction: KFunction<*>,
@@ -62,7 +60,7 @@ class IocContainer {
         return targetFunction.call(*(listOf(module) + sourceComponents).toTypedArray())!!
     }
 
-    fun addInstance(
+    override fun addInstance(
         name: String,
         component: Any,
     ) {
@@ -71,7 +69,7 @@ class IocContainer {
         components[name] = component
     }
 
-    fun getInstanceOrNull(name: String): Any? {
+    override fun getInstanceOrNull(name: String): Any? {
         return components[name]
     }
 }

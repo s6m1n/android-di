@@ -1,5 +1,9 @@
-package com.example.di
+package com.example.di.tobe
 
+import com.example.di.InstanceProvideModule
+import com.example.di.Provides
+import com.example.di.TestDao
+import com.example.di.TestDaoImpl
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
