@@ -72,4 +72,8 @@ class IocContainer : Container {
     override fun getInstanceOrNull(name: String): Any? {
         return components[name]
     }
+
+    override fun contains(name: String): Boolean {
+        return name in components
+    }
 }

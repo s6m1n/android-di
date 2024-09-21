@@ -9,4 +9,6 @@ interface Container {
     )
 
     fun getInstanceOrNull(name: String): Any?
+
+    operator fun contains(name: String): Boolean
 }
